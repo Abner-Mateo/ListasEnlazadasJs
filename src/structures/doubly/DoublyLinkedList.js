@@ -1,12 +1,13 @@
 const DoublyNode = require("./DoublyNode");
 
-class DoublyLinkedList {
-  constructor() {
+class DoublyLinkedList { 
+  constructor() {        
     this.head = null;
     this.tail = null;
     this._size = 0;
   }
 
+ 
   addFirst(value) {
     const newNode = new DoublyNode(value);
     if (this.head === null) {
@@ -74,28 +75,90 @@ class DoublyLinkedList {
     return false;
   }
 
-  countOccurrences(value) {
-    throw new Error(
-      "TODO RETO: Implementar countOccurrences(value) en DoublyLinkedList."
-    );
+  ccountOccurrences(value) {
+    let count = 0;
+    let current = this.head;
+    while (current !== null) {
+      if (this._isSameValue(current.value, value)) {
+        count++;
+      }
+      current = current.next;
+    }
+    return count;
   }
 
-  clean() {
-    throw new Error("TODO RETO: Implementar clean() en DoublyLinkedList.");
+ clean() {
+    let count = 0;
+    let current = this.head;
+
+    while (current !== null) {
+      let siguiente = current.next;
+      current.next = null;
+      count++;
+      current = siguiente;
+    }
+
+    this.head = null;
+    this.tail = null;
+    this._size = 0;
+
+    return count;
   }
 
   reverseInPlace() {
-    throw new Error(
-      "TODO RETO: Implementar reverseInPlace() en DoublyLinkedList."
-    );
+    if (this.head === null || this.head.next === null) {
+      return;
+    }
+
+    let previousNode = null;
+    let current = this.head;
+    let nuevoTail = this.head;
+
+    while (current !== null) {
+      let nextNode = current.next;
+      
+      current.next = previousNode; 
+      current.previous = nextNode; 
+      previousNode = current;
+      current = nextNode;
+    }
+
+    this.head = previousNode;
+    this.tail = nuevoTail;
+    
+    this.tail.next = null;
+    this.head.previous = null; 
   }
 
   removeDuplicates() {
-    throw new Error(
-      "TODO RETO: Implementar removeDuplicates() en DoublyLinkedList."
-    );
-  }
+    let current = this.head;
 
+    while (current !== null) {
+      let runner = current;
+
+      while (runner.next !== null) {
+        if (runner.next.value === current.value) {
+          
+          let nodoAEliminar = runner.next; 
+        
+          runner.next = nodoAEliminar.next;
+          
+          if (nodoAEliminar.next !== null) {
+            nodoAEliminar.next.previous = runner;
+          } else {
+           
+            this.tail = runner;
+          }
+          
+          this._size--;
+        } else {
+          runner = runner.next;
+        }
+      }
+      current = current.next;
+    }
+  }
+  
   size() {
     return this._size;
   }

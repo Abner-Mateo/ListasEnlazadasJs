@@ -54,25 +54,78 @@ class SinglyLinkedList {
   }
 
   countOccurrences(value) {
-    throw new Error(
-      "TODO RETO: Implementar countOccurrences(value) en SinglyLinkedList."
-    );
+    let count = 0;
+    let current = this.head;
+    while (current !== null) {
+      if (this._isSameValue(current.value, value)) {
+        count++;
+      }
+      current = current.next;
+    }
+    return count;
   }
 
   clean() {
-    throw new Error("TODO RETO: Implementar clean() en SinglyLinkedList.");
+    let count = 0;
+    let current = this.head;
+
+    while (current !== null) {
+      let siguiente = current.next;
+      current.next = null;
+      count++;
+      current = siguiente;
+    }
+
+    this.head = null;
+    this.tail = null;
+    this._size = 0;
+
+    return count;
   }
 
-  reverseInPlace() {
-    throw new Error(
-      "TODO RETO: Implementar reverseInPlace() en SinglyLinkedList."
-    );
+ reverseInPlace() {
+    if (this.head === null || this.head.next === null) {
+      return;
+    }
+
+    let previous = null;
+    let current = this.head;
+    let nuevoTail = this.head;
+
+    while (current !== null) {
+      let nextNode = current.next;
+      current.next = previous;
+      previous = current;
+      current = nextNode;
+    }
+
+    this.head = previous;
+    this.tail = nuevoTail;
+    this.tail.next = null;
   }
 
   removeDuplicates() {
-    throw new Error(
-      "TODO RETO: Implementar removeDuplicates() en SinglyLinkedList."
-    );
+    let current = this.head;
+
+    while (current !== null) {
+      let runner = current;
+
+      while (runner.next !== null) {
+        if (runner.next.value === current.value) {
+          
+          runner.next = runner.next.next;
+          this._size--;
+          
+          
+          if (runner.next === null) {
+            this.tail = runner;
+          }
+        } else {
+          runner = runner.next;
+        }
+      }
+      current = current.next;
+    }
   }
 
   size() {
